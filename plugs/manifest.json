@@ -1,0 +1,36 @@
+﻿{
+  "manifest_version": 2,
+  "name": "__MSG_name__",
+  "description": "__MSG_description__",
+  "default_locale": "zh_CN",
+  "version": "1.0",
+  "browser_action": {
+					  "default_icon": "icons/icon.png",
+					  "default_popup": "files/popup.html",
+					  "default_title": "Click here!"
+					},
+  "offline_enabled":false,
+  "content_scripts": [{
+      "matches": ["http://*/","http://*/*","https://*/","https://*/*"],
+      "js": ["files/theme/common/jquery-1.6.2.min.js",
+			"files/theme/common/jquery.form.js",
+			"files/theme/common/angular.min.js", 
+			"files/theme/js/const.js",
+			"files/theme/js/model.js",
+			"files/theme/js/contentScript.js",
+			"files/theme/js/main.js"],
+	  "run_at":"document_idle",
+	  "all_frames": true 
+   }],
+   
+  "permissions": [
+        "tabs",
+        "activeTab",
+        "notifications",
+		"storage",
+		"http://*/",
+		"http://*/*",
+		"https://*/",
+		"https://*/*"
+    ]
+}
