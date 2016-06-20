@@ -7,6 +7,7 @@ class WorkTime {
 		this.date = date;
 		this.am = am;
 		this.pm = pm;
+		this.lackTime = undefined;
 	}
 	getDate() {
 		return this.date;
@@ -26,7 +27,12 @@ class WorkTime {
 	setPm(pm) {
 		this.pm = pm;
 	}
-
+	getLackTime(){
+		return this.lackTime;
+	}
+	setLackTime(lackTime){
+		this.lackTime = Math.floor(lackTime * 60);
+	}
 	getRealWorkTime() {
 		var realWorkTime = 0;
 		let am = this.getAm(),
@@ -34,23 +40,9 @@ class WorkTime {
 		if (undefined != am && undefined != pm) {
 			realWorkTime = (pm - am);
 		}
-		return Math.floor(realWorkTime / HOUR_MILL_TIME);
+		return realWorkTime / HOUR_MILL_TIME - 1;
 	}
 
-	toString() {
-		console.table(this);
-	}
-	equals(workTime){
-		if(	this.date != workTime.date){
-			return false;
-		}
-		if(this.am != workTime.am){
-			return false;
-		}
-		if(this.pm != workTime.pm){
-			return false;
-		}
-	}
 }
 /**
  * Work for a month
@@ -59,6 +51,7 @@ class Work {
 	constructor(workTimes, month) {
 		this.month = month;
 		this.workTimes = workTimes;
+		this.complete = false;
 	}
 	getMonth(){
 		return this.month;
@@ -72,6 +65,12 @@ class Work {
 	setWorkTimes(workTimes){
 		this.workTimes = workTimes;
 	}
+	isComplete(){
+		return this.complete;
+	}
+	setComplete(complete){
+		this.complete = complete;
+	}
 	getLackWorkTimes(functionName){
 		this.execute(functionName);
 	}
@@ -80,6 +79,20 @@ class Work {
 	}
 	execute(functionName){
 		functionName.apply(this, this.workTimes);
+	}
+	append(workTimes){
+		let thisWorkTimes = this.workTimes;
+		workTimes.reverse();
+		for(let index in workTimes){
+			thisWorkTimes.unshift(workTimes[index]);
+		}
+	}
+	pop(){
+		let thisWorkTimes = this.workTimes;
+		this.workTimes = thisWorkTimes.slice(0, WORK_START_DATE -1);
+		if(this.workTimes.length >= 25){
+			this.complete = true;
+		}
 	}
 	equals(workTimes){
 		if(this.month.toString() != workTimes.month.toString()){
@@ -90,14 +103,21 @@ class Work {
 		}
 		return true;
 	}
+	reverse(){
+		this.workTimes = this.workTimes.reverse();
+		return this;
+	}
 }
 /**
  * Record for last 4 months;
  */
 class Record {
 	constructor(works) {
-		this.record = new Set();
+		this.record = new Array();
 		this.append(works);
+		this.currentWeekLackWorkTimes = [];
+		this.reimburseWorkTimes = [];
+		this.overTimeWorkTimes = [];
 	}
 	getWorks(index = 0) {
 		return this.record[index];
@@ -107,18 +127,50 @@ class Record {
 	}
 	append(works){
 		if(undefined != works){
-			this.record.add(works);
+			this.record.push(works.reverse());
 		}
 	}
 	getAllWorks(){
 		return this.record;
 	}
 	has(workTime){
-		let isEquals = false;
+		let isEqual = false;
 		this.record.forEach(function(work){
-			isEquals = work.equals(workTime);
+			isEqual = work.equals(workTime);
 		});
-		return isEquals;
+		return isEqual;
 	}
+	getLackWorkTimes(functionName, timeRule){
+		this.execute(functionName, timeRule);
+	}
+	
+	getOverTimeWorkTimes(functionName, timeRule){
+		this.execute(functionName, timeRule);
+	}
+	
+	getReimburseWorkTimes(functionName, timeRule){
+		this.execute(functionName, timeRule);
+	}
+	
+	execute(functionName, timeRule){
+		let work = this.getAllWorks();
+		let isBeak = false;
+		for(let indexWork in work){
+			let workTimes = work[indexWork].getWorkTimes();
+			if(isBeak){
+				break;
+			}
+			for (let indexWorkTimes in workTimes){
+				let workTime = workTimes[workTimes.length - indexWorkTimes - 1];
+				let realWorkTime = workTime.getRealWorkTime();
+				let isOut = functionName.apply(this, [workTime, realWorkTime, timeRule]);
+				if(isOut){
+					isBeak = true;
+					break;
+				}
+			}
+		}
+	}
+	
 }
 

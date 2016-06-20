@@ -25,6 +25,8 @@ function initWorkTime(workTime, domValues) {
 	workTime.setDate(domValues[0]);
 	workTime.setAm(domValues[1]);
 	workTime.setPm(domValues[2]);
+	let realWorkTime = workTime.getRealWorkTime();
+	workTime.setLackTime(realWorkTime - WORK_TIME);
 }
 var createWorkTimes = function($response){
 	let $table = $response.find(WORK_TIME_CLASS);
@@ -50,17 +52,76 @@ var getMonthWork = function($response){
 }
 
 var isContainue = function(){
-	let size = record.getAllWorks().size;
+	let size = record.getAllWorks().length;
 	return size >= MONTH ? false:true;
 }
-var getRecord = function(response, classType, isSame){
-	 if(!isContainue()){
-		return record;
+var completeRecord= function(){
+	let works = record. getAllWorks();
+	for (let workIndex in works){
+		if(!works[workIndex].isComplete() && workIndex < works.length -1){
+			completeWork(works, workIndex);
+		}
 	}
-	let $response = $(response);
-	let monthWork = getMonthWork($response);
-	initRecord(monthWork, $response, classType);
-	
+	works.pop();
+}
+var completeWork = function(works, workIndex){
+	let currentMonth = works[workIndex];
+	currentMonth.pop();
+	let previousMonth = works[(new Number(workIndex)+1)];
+	let previousMonthWorkTime = previousMonth.getWorkTimes().slice(WORK_END_DATE);
+	currentMonth.append(previousMonthWorkTime);
+	console.debug();
+}
+var getLastWorkTime = function(works, workIndex){
+	let work = works[workIndex];
+	let workTimes = work.getWorkTimes();
+	let lastIndex = workTimes.length - 1;
+	return workTimes[lastIndex];
+}
+
+var getRecord = function(response, classType, isSame){
+	if(isContainue()){
+		let $response = $(response);
+		let monthWork = getMonthWork($response);
+		initRecord(monthWork, $response, classType);
+	} else {
+		completeRecord();
+		getLackWorkTimes();
+		getReimburseWorkTimes();
+		getOverTimeWorkTimes();
+	}
+}
+var getLackWorkTimes = function(){
+	record.getLackWorkTimes(function(workTime, realWorkTime, timeRule){
+			let isOut = Math.floor(((new Date()- workTime.getDate()) / (HOUR_MILL_TIME *24)));
+			let week = workTime.getDate().getDay();
+			workTime.setLackTime(realWorkTime - timeRule);
+			if(isOut <= 7  && week <= 6 && realWorkTime < timeRule && realWorkTime > 0){
+				this.currentWeekLackWorkTimes.push(workTime);
+			} 
+			if(isOut > 7) {
+				return true;
+			}
+			return false;
+	}, WORK_TIME);
+
+}
+var getReimburseWorkTimes = function(){
+	record.getReimburseWorkTimes(function(workTime, realWorkTime, timeRule){
+		let week = workTime.getDate().getDay();
+		if(realWorkTime >= timeRule && week < 6 && week > 0){
+			this.reimburseWorkTimes.push(workTime);
+		}
+	}, WORK_REIMBURSE_TIME);	
+}
+
+var getOverTimeWorkTimes = function(){
+	record.getOverTimeWorkTimes(function(workTime, realWorkTime, timeRule){
+		let week = workTime.getDate().getDay();
+		if(realWorkTime >= timeRule && (week == 6 || week == 0)){
+			this.overTimeWorkTimes.push(workTime);
+		}
+	}, WORK_TIME);	
 }
 var initRecord = function(monthWork, $response, classType){
 	let has = record.has(monthWork);
