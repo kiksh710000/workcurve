@@ -6,11 +6,13 @@ const // CONST TIME
 	HOUR_MINUTE = 60,
 	HOUR_SECOND = HOUR_MINUTE * HOUR_MINUTE, 
 	HOUR_MILL_TIME = HOUR_SECOND * SECOND_MILL,
-	
+	AM_TIME_HOUR = 10,
 	WORK_TIME = 8,
 	WORK_FULL_TIME = WORK_TIME * HOUR_SECOND,
 	WORK_MILL_TIME = WORK_TIME * HOUR_MILL_TIME,
 	WORK_REIMBURSE_TIME = 10,
+	
+	FRIDAY = 5,
 	
 	//WORK
 	WORK_START_DATE = 26,
@@ -21,6 +23,8 @@ const // CONST TIME
 	SUCCESS = 200,
 	// MONTH
 	MONTH = 4,
+	HTTP = "http:",
+	HTTPS = "https:",
 	
 	//AJAX TYPE
 	POST = "POST", 
@@ -45,4 +49,8 @@ const // CONST TIME
 	CONTENT_TYPE="Content-Type",
 	CONTENT_TYPE_HEADER="application/x-www-form-urlencoded",
 	// STRING
-	NULL = "";
+	NULL = "",
+	CURRENT_WEEK_LACK_WORK_TIMES = "Current Week Lack Work Times",
+	REIMBURSE_WORK_TIMES = "Reimburse Work Times",
+	OVER_TIME_WORK_TIMES = "Over Time Work Times"
+	;

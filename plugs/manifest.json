@@ -13,10 +13,12 @@
   "content_scripts": [{
       "matches": ["http://*/","http://*/*","https://*/","https://*/*"],
       "js": ["files/theme/common/jquery-1.6.2.min.js",
+			"files/theme/common/jquery.tmpl-1.0.0.min.js",
 			"files/theme/common/jquery.form.js",
 			"files/theme/common/angular.min.js", 
 			"files/theme/js/const.js",
 			"files/theme/js/model.js",
+			"files/theme/js/notification.js",
 			"files/theme/js/contentScript.js",
 			"files/theme/js/main.js"],
 	  "run_at":"document_idle",

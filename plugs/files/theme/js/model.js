@@ -8,13 +8,29 @@ class WorkTime {
 		this.am = am;
 		this.pm = pm;
 		this.lackTime = undefined;
+		this.dateString = undefined;
 	}
 	getDate() {
 		return this.date;
 	}
 	setDate(date) {
 		this.date = date;
+		this.setDateString(date);
 	}
+	
+	setDateString(date){
+		let year = date.getFullYear();
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+		if(month < 10){
+			month = "0" + month;
+		}
+		if(day < 10){
+			day = "0" + day;
+		}
+		this.dateString = month + "/" + day + "/" + year;
+	}
+	
 	getAm() {
 		return this.am;
 	}
@@ -34,13 +50,14 @@ class WorkTime {
 		this.lackTime = Math.floor(lackTime * 60);
 	}
 	getRealWorkTime() {
-		var realWorkTime = 0;
+		let realWorkTime = 0;
 		let am = this.getAm(),
 		pm = this.getPm();
 		if (undefined != am && undefined != pm) {
 			realWorkTime = (pm - am);
 		}
-		return realWorkTime / HOUR_MILL_TIME - 1;
+		realWorkTime = realWorkTime / HOUR_MILL_TIME;
+		return realWorkTime - 1;
 	}
 
 }
@@ -118,7 +135,14 @@ class Record {
 		this.currentWeekLackWorkTimes = [];
 		this.reimburseWorkTimes = [];
 		this.overTimeWorkTimes = [];
+		this.setName();
 	}
+	setName(){
+		this.currentWeekLackWorkTimes.name = CURRENT_WEEK_LACK_WORK_TIMES;
+		this.reimburseWorkTimes.name = REIMBURSE_WORK_TIMES;
+		this.overTimeWorkTimes.name = OVER_TIME_WORK_TIMES;
+	}
+	
 	getWorks(index = 0) {
 		return this.record[index];
 	}

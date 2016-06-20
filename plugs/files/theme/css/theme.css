@@ -1,3 +1,19 @@
 body {
 	margin: 0px;
 }
+.notification {
+	background-color: #474747;
+	width: 20%;
+    border-radius: 6px;
+}
+.notification div{
+	color: #fbf8f8;
+}
+.close{
+	float: right;
+	background-color: #000000;
+	width: 20px;
+	border-radius: 10px;
+	text-align: center;
+	border: 2px solid #fefdfd;
+}

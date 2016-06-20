@@ -26,7 +26,8 @@ function initWorkTime(workTime, domValues) {
 	workTime.setAm(domValues[1]);
 	workTime.setPm(domValues[2]);
 	let realWorkTime = workTime.getRealWorkTime();
-	workTime.setLackTime(realWorkTime - WORK_TIME);
+	let time = realWorkTime - WORK_TIME;
+	workTime.setLackTime(realWorkTime > 0 ? time : 0);
 }
 var createWorkTimes = function($response){
 	let $table = $response.find(WORK_TIME_CLASS);
@@ -89,6 +90,7 @@ var getRecord = function(response, classType, isSame){
 		getLackWorkTimes();
 		getReimburseWorkTimes();
 		getOverTimeWorkTimes();
+		showResult();
 	}
 }
 var getLackWorkTimes = function(){
@@ -96,7 +98,7 @@ var getLackWorkTimes = function(){
 			let isOut = Math.floor(((new Date()- workTime.getDate()) / (HOUR_MILL_TIME *24)));
 			let week = workTime.getDate().getDay();
 			workTime.setLackTime(realWorkTime - timeRule);
-			if(isOut <= 7  && week <= 6 && realWorkTime < timeRule && realWorkTime > 0){
+			if(isOut <= 7  && week <= 6 /*&& realWorkTime < timeRule*/ && realWorkTime > 0){
 				this.currentWeekLackWorkTimes.push(workTime);
 			} 
 			if(isOut > 7) {
@@ -121,7 +123,7 @@ var getOverTimeWorkTimes = function(){
 		if(realWorkTime >= timeRule && (week == 6 || week == 0)){
 			this.overTimeWorkTimes.push(workTime);
 		}
-	}, WORK_TIME);	
+	}, WORK_TIME);
 }
 var initRecord = function(monthWork, $response, classType){
 	let has = record.has(monthWork);
@@ -197,3 +199,54 @@ var getArgument = function(text){
 var getIndex = function(text, matchString){
 	return text.indexOf(matchString);
 }
+
+var showResult = function(){
+	initTmpl();
+}
+var initTmpl = function(){
+	let currentWeekLackWorkTimes = record.currentWeekLackWorkTimes,
+	reimburseWorkTimes = record.reimburseWorkTimes,
+	overTimeWorkTimes = record.overTimeWorkTimes;
+	let $webSiteBody = $("body");
+	$webSiteBody.append(template);
+	currentWeekLackWorkTimes.total = getTotalLoackWorkTimes(currentWeekLackWorkTimes);
+	let lackWorkTimesTmpl = $("#template").tmpl({data : currentWeekLackWorkTimes});
+	let reimburseWorkTimesTmpl = $("#template").tmpl({data : reimburseWorkTimes});
+	let overTimeWorkTimesTmpl = $("#template").tmpl({data : overTimeWorkTimes});
+	show(lackWorkTimesTmpl);
+	show(reimburseWorkTimesTmpl);
+	show(overTimeWorkTimesTmpl);
+	end();
+}
+var getTotalLoackWorkTimes = function(times){
+	let time = 0;
+	times.forEach(function(item){
+		let workTime = item;
+		time +=item.getLackTime(); 
+	});
+	return time;
+}
+var show = function(tmpl){
+	$("#notification").append(tmpl);
+}
+var end = function(){
+	let $notification = $("#notification");
+	$notification.css(CSS.notification);
+	let $close = $notification.find("#notificationClose");
+	$close.css(CSS.close);
+	let $labels = $notification.find(".label");
+	$labels.css(CSS.label);
+	let $clear = $notification.find(".clear");
+	$clear.css(CSS.clear);
+	let $columns = $notification.find(".column");
+	$columns.css(CSS.column);
+	let $rows = $notification.find(".row");
+	$rows.css(CSS.row);
+	let $totalRow = $notification.find(".totalRow");
+	$totalRow.css(CSS.row);
+	$totalRow.css(CSS.totalRow);
+
+}
+$("#close").click(function(){
+	console.log();
+});
