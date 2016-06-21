@@ -29,7 +29,7 @@ var timeToGetRecord = function(){
 		let hour = currentDate.getHours(),
 		minunte = currentDate.getMinutes();
 		//return true;
-		if(FRIDAY === dayOfWeek && AM_TIME_HOUR === hour){
+		if(AM_TIME_HOUR === hour){
 			return true;
 		}
 		return false;
