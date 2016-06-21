@@ -98,10 +98,14 @@ var getLackWorkTimes = function(){
 			let isOut = Math.floor(((new Date()- workTime.getDate()) / (HOUR_MILL_TIME *24)));
 			let week = workTime.getDate().getDay();
 			workTime.setLackTime(realWorkTime - timeRule);
-			if(isOut <= 7  && week <= 6 /*&& realWorkTime < timeRule*/ && realWorkTime > 0){
+			var out = this.currentWeekLackWorkTimes.out;
+			if(isOut <= 8  && week <= 6 && realWorkTime > 0 && true !== out){
 				this.currentWeekLackWorkTimes.push(workTime);
+				if(week == 1){
+					this.currentWeekLackWorkTimes.out = true;
+				}
 			} 
-			if(isOut > 7) {
+			if(isOut > 8) {
 				return true;
 			}
 			return false;

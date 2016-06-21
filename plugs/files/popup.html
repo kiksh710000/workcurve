@@ -3,46 +3,9 @@
 <head>
 	<title>Title of the document</title>
 	<link rel="stylesheet" type="text/css" href="theme/css/theme.css"/>
-	
+	<script src="theme/js/init.js"></script>
 </head>
 <body>
-	<div id="notification" class="notification">
-        <div id="notificationClose" class="notificationClose" onClick="javascript:this.parentNode.remove();localStorage.setItem('isClose', true);localStorage.setItem('isNewWeek', new Date());">
-            <a>X</a>
-        </div>
-    </div>
-    <script id='template' type='text/x-jquery-tmpl'>
-        <div class="label">
-            <label>{{= data.name}}</label>
-        </div>
-        <div class='table'>
-            <div class='head'>
-                <div class='column'>DATE</div>
-                <div class='column'>TIME(min)</div>
-            </div>
-            {{each(index, item) data}}
-                <div class='row'>
-                    <div class='column'>{{= item.dateString}}</div>
-                    <div class='column'>{{= item.lackTime}}</div>
-                </div>
-            {{/each}}
-            {{if undefined != data.total}}
-                <div class='totalRow'>
-                    <div class='column'>Total Time</div>
-                    <div class='column'>{{= data.total}}</div>
-                </div>
-            {{/if}}
-        </div>
-    </script>
-    
-    <script type="text/javascript" charset="utf-8" src="theme/common/jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/common/jquery.form.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/common/jquery.tmpl-1.0.0.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/js/const.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/js/model.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/js/notification.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/js/contentScript.js"></script>
-    <script type="text/javascript" charset="utf-8" src="theme/js/main.js"></script>
-    
+	
 </body>
 </html>

@@ -9,7 +9,6 @@
 					  "default_popup": "files/popup.html",
 					  "default_title": "Click here!"
 					},
-  "offline_enabled":false,
   "content_scripts": [{
       "matches": ["http://*/","http://*/*","https://*/","https://*/*"],
       "js": ["files/theme/common/jquery-1.6.2.min.js",
@@ -24,14 +23,12 @@
 	  "run_at":"document_idle",
 	  "all_frames": true 
    }],
-   
+  "content_security_policy": "'script-src 'self' files/theme/js/main.js; object-src 'self'; default-src 'self'",
   "permissions": [
         "tabs",
         "activeTab",
         "notifications",
 		"storage",
-		"cookies",
-		"contentSettings",
 		"http://*/",
 		"http://*/*",
 		"https://*/",

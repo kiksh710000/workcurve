@@ -1,6 +1,15 @@
 body {
 	margin: 0px;
 }
+.init{
+	width: 70px;
+    height: 20px;
+    color: #ffffff;
+    margin: 0 auto;
+    background-color: #474747;
+    border-radius: 6px;
+    text-align: center;
+}
 .close {
 	float: right;
     background-color: #000000;

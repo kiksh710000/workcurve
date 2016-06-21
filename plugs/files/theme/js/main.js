@@ -28,6 +28,7 @@ var timeToGetRecord = function(){
 		let dayOfWeek = currentDate.getDay();
 		let hour = currentDate.getHours(),
 		minunte = currentDate.getMinutes();
+		//return true;
 		if(FRIDAY === dayOfWeek && AM_TIME_HOUR === hour){
 			return true;
 		}
@@ -42,7 +43,7 @@ var isShow = function(){
 	let isClose = localStorage.getItem("isClose");
 	if (isNew){
 		//非本周
-		if(undefined != isClose && "true" == isClose){
+		if(undefined != isClose){
 			return true;
 		}
 	} else {
@@ -50,6 +51,7 @@ var isShow = function(){
 		localStorage.setItem("isClose", true);
 	}
 	return false;
+	//return true;
 }
 var isNewWeek = function(){
 	let oldWeek = localStorage.getItem("isNewWeek");
@@ -63,6 +65,7 @@ var isNewWeek = function(){
 		isNew = isNew && oldDate.getMonth() == newDate.getMonth();
 		isNew = isNew && oldDate.getDate() == newDate.getDate();
 		return !isNew;
+		//return true;
 	}
 }
 var isGetRecord = function(){
