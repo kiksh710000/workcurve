@@ -30,6 +30,8 @@
         "activeTab",
         "notifications",
 		"storage",
+		"cookies",
+		"contentSettings",
 		"http://*/",
 		"http://*/*",
 		"https://*/",

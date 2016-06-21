@@ -19,31 +19,64 @@ fn.ajax = function(type, url, data, callback){
 	}
 }
 var cross = new Cross();
-let get = GET;
+var get = GET;
 var record = new Record();
 var timeToGetRecord = function(){
-	let currentDate = new Date();
-	let dayOfWeek = currentDate.getDay();
-	let hour = currentDate.getHours(),
-	minunte = currentDate.getMinutes();
-	if(FRIDAY === dayOfWeek && AM_TIME_HOUR === hour){
-		return true;
+	let show = isShow();
+	if(show){
+		let currentDate = new Date();
+		let dayOfWeek = currentDate.getDay();
+		let hour = currentDate.getHours(),
+		minunte = currentDate.getMinutes();
+		if(FRIDAY === dayOfWeek && AM_TIME_HOUR === hour){
+			return true;
+		}
+		return false;
+		
+	} else {
+		return false;
 	}
-	return true;
+	
+}
+var isShow = function(){
+	let isNew = isNewWeek();
+	let isClose = localStorage.getItem("isClose");
+	if (isNew){
+		//非本周
+			return true;
+	} else {
+		//本周
+		localStorage.setItem("isClose", true);
+	}
+	return false;
+}
+var isNewWeek = function(){
+	let oldWeek = localStorage.getItem("isNewWeek");
+	if(undefined == oldWeek || "" == oldWeek){
+		localStorage.setItem("isClose", false);
+		return true;
+	} else {
+		let oldDate = new Date(oldWeek);
+		let newDate = new Date();
+		let isNew = oldDate.getFullYear() == newDate.getFullYear();
+		isNew = isNew && oldDate.getMonth() == newDate.getMonth();
+		isNew = isNew && oldDate.getDate() == newDate.getDate();
+		return !isNew;
+	}
 }
 var isGetRecord = function(){
 	let protocol = window.location.protocol;
 	if(HTTP == protocol){
 		return true;
 	}
-	return false;
+	return true;
 
 }
 
+if(timeToGetRecord() && isGetRecord()){
+	cross.ajax(get, URL, NULL, function(response){
+		getRecord(response, GO_TO_MONTH_CLASS_TYPE);
+	});
+}
 
-/*cross.ajax(get, URL, NULL, function(response){
-	getRecord(response, GO_TO_MONTH_CLASS_TYPE);
-});*/
-
-//start
 

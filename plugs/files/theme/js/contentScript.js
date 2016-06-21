@@ -234,6 +234,8 @@ var end = function(){
 	$notification.css(CSS.notification);
 	let $close = $notification.find("#notificationClose");
 	$close.css(CSS.close);
+	let $closeLink = $notification.find(".closeLink");
+	$closeLink.css(CSS.closeLink);
 	let $labels = $notification.find(".label");
 	$labels.css(CSS.label);
 	let $clear = $notification.find(".clear");

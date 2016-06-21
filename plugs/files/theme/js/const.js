@@ -52,5 +52,7 @@ const // CONST TIME
 	NULL = "",
 	CURRENT_WEEK_LACK_WORK_TIMES = "Current Week Lack Work Times",
 	REIMBURSE_WORK_TIMES = "Reimburse Work Times",
-	OVER_TIME_WORK_TIMES = "Over Time Work Times"
+	OVER_TIME_WORK_TIMES = "Over Time Work Times",
+	IS_CLOSE= "isClose",
+	IS_SEND_EMAIL="isSend_Email"
 	;
