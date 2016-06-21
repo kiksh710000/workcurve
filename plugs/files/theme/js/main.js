@@ -32,7 +32,6 @@ var timeToGetRecord = function(){
 			return true;
 		}
 		return false;
-		
 	} else {
 		return false;
 	}
@@ -43,7 +42,9 @@ var isShow = function(){
 	let isClose = localStorage.getItem("isClose");
 	if (isNew){
 		//非本周
+		if(undefined != isClose && "true" == isClose){
 			return true;
+		}
 	} else {
 		//本周
 		localStorage.setItem("isClose", true);
@@ -69,7 +70,7 @@ var isGetRecord = function(){
 	if(HTTP == protocol){
 		return true;
 	}
-	return true;
+	return false;
 
 }
 
