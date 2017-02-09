@@ -10,7 +10,7 @@
 					  "default_title": "Click here!"
 					},
   "content_scripts": [{
-      "matches": ["http://gold/attendance/*","http://gold/attendance*/*","https://gold/attendance/*","https://gold/attendance*"],
+      "matches": ["http://gold/attendance/*","https://gold/attendance/*"],
       "js": ["files/theme/common/jquery-1.6.2.min.js",
 			"files/theme/common/jquery.tmpl-1.0.0pre.min.js",
 			"files/theme/js/main.js"],
