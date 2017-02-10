@@ -1,4 +1,10 @@
 ﻿{
-  "name": {"message": "Work Timer"},
-  "description": {"message": "Work Timer"}
+  "extensionName": {
+	  "message": "Work Timer",
+	  "description": "Name of the extension"
+  },
+  "extensionDescription": {
+	"message": "Work Timer",
+	"description": "Calculate work time"
+  }
 }
